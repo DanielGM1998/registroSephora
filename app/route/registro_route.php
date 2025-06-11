@@ -359,9 +359,9 @@
 		
 			$sheet->setCellValue("A6", 'Nombre');
 			$sheet->setCellValue("B6", 'Nombre Encargado');
-			$sheet->setCellValue("C6", 'General');
-			$sheet->setCellValue("D6", 'Actividad');
-			$sheet->setCellValue("E6", 'Total Visitas');
+			$sheet->setCellValue("C6", 'Visitas');
+			$sheet->setCellValue("D6", 'Actividad Finalizada');
+			$sheet->setCellValue("E6", 'Total Participantes');
 		
 			$registros = $this->model->seg_usuario->getAllByTipo('2');
 			if($registros->response){
