@@ -72,6 +72,22 @@
 			return $this->response;
 		}
 
+		// Obtener los codigos utilizados en registro
+		public function getCodigosUsados() {
+			$this->response->result = $this->db
+				->from($this->table)
+				->select(null)->select("$this->table.id")
+				->where("$this->table.fecha_salida IS NULL")
+				->where("$this->table.status", 1)
+				->fetchAll();
+			if($this->response->result) {
+				$this->response->SetResponse(true);
+			} else {
+				$this->response->SetResponse(false, 'No existe el registro');
+			}
+			return $this->response;
+		}
+
 		// Obtener los datos de registro por medio del ID
 		public function getCountVisitas($fk_codigo) {
 			$this->response->result = $this->db

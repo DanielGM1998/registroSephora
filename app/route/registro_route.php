@@ -219,6 +219,33 @@
 			}
 		});
 
+		// Ruta para agregar registro de checkIn-checkOut
+		$this->post('deleteRegistrosSinSalida/', function ($req, $res, $args) {
+			date_default_timezone_set('America/Mexico_City');
+			$this->model->transaction->iniciaTransaccion();
+			$info = $this->model->registro->getCodigosUsados();
+			if($info->response){
+				foreach($info->result as $item){
+					$id = intval($item->id);
+					$data = array(
+						'status' => "0",
+					);
+					$info2 = $this->model->registro->edit($data, $id);
+					if(!$info2->response){
+						$info2->result = "";
+						$info2->state = $this->model->transaction->regresaTransaccion();
+						return $res->withJson($info2->setResponse(false, 'No hay registros'));
+					}
+				}
+				$res->state = $this->model->transaction->confirmaTransaccion(); 
+				return $res->withJson($info->setResponse(true, 'Registros eliminados correctamente'));
+			}else{
+				$info->result = "";
+				$info->state = $this->model->transaction->regresaTransaccion();
+				return $res->withJson($info->setResponse(false, 'No hay registros'));
+			}
+		});
+
 		//CheckIn registros app
 		/*
 		$this->post('checkin/{codigo}[/{fk_seg_usuario}]', function ($req, $res, $args) {
